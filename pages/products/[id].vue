@@ -1,40 +1,29 @@
 <template>
     <div>
-        <!--
-            Ajouter le composant ProductDetails qui a comme props un produit
-            et qui va servir pour afficher les détails du produit
-        -->
+        <div v-if="pending" class="text-center py-12">
+            <p class="text-gray-600">Loading product details...</p>
+        </div>
+        <div v-else-if="error" class="text-center py-12">
+            <p class="text-red-600">Error loading product details. Please try again later.</p>
+        </div>
+        <div v-else-if="product">
+            <ProductDetails :product="product" />
+        </div>
+        <div v-else class="text-center py-12">
+            <p class="text-gray-600">Product not found</p>
+        </div>
     </div>
 </template>
 
 <script setup>
-    /**
-     * Utiliser le code adéquat pour récupérer le id avec useRoute() 
-     * ou autres moyens si vous le voulez
-     */
-    
+    definePageMeta({
+        layout: 'product'
+    })
 
-     /**
-     * Mettez le code adéquat pour permettre à products/[id].vue 
-     * d'avoir le layout Product.vue
-     */
+    const route = useRoute()
+    const { data: product, pending, error } = await useFetch(`https://fakestoreapi.com/products/${route.params.id}`)
 
-   
-     /**
-      * En se basant sur l'id récuperé précédement
-      * Utilisez l'url adéquat depsui fakestoreapi.com pour 
-      * récupérer le produit afin de pouvoir le passer comme props
-      * au composant ProductDetails
-      */
-    /**
-     * TIPS : IN CASE THAT YOU GET THE SAME PRODUCT EACH TIME YOU CLICK ON NEW ONE
-              IS BECAUSE USEFETCH TRY TO MINIMIZE THE API CALL.
-              SO WE ADD NEW ATTRIBUTE TO USEFETCH IN ORDER
-             EACH TIME THERE IS A NEW ID NUXT PERFORMS A NEW FETCH
-     */
-    
-    
-    //We throw an error in case there is no product so we can use the error.vue
+    // We throw an error in case there is no product so we can use the error.vue
     // fatal property force the app to show the error (in order is created in the browser)
     if(!product.value)
         throw createError({statusCode: 404, statusMessage: "Product does not exist", fatal: true})

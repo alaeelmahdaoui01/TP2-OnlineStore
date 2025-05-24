@@ -1,26 +1,26 @@
 <template>
-    <div class="card text-center">
-        <!-- IMG Tag that show the product images 
-                CSS Class is "thumb"
-        -->
-        <img >
-        <!-- P Tag that show the product title 
-                CSS Class is "font-bold text-gray-500 m-4 truncate"
-        -->
-        <p></p>
-        <!-- A NuxtLink to /products/product ID (ex /products/2)
-             Inside  
-        -->
-        <NuxtLink>
-            <p class="btn my-4">View details</p>
-        </NuxtLink>  
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <img :src="product.image" :alt="product.title" class="w-full h-48 object-contain p-4" />
+    <div class="p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">{{ product.title }}</h3>
+      <p class="text-gray-600 mb-2 line-clamp-2">{{ product.description }}</p>
+      <div class="flex justify-between items-center">
+        <span class="text-xl font-bold text-blue-600">${{ product.price }}</span>
+        <NuxtLink :to="'/products/' + product.id" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          View Details
+        </NuxtLink>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-    // DEFINEPROPS IS A FUNCTION IN NUXT WHICH TAKE AS AN ARGUMENT AN ARRAY OF DIFFERENT
-    // PROPS THAT WE WANT TO ACCEPT
-    const {product} = defineProps(['product'])
+defineProps({
+  product: {
+    type: Object,
+    required: true
+  }
+})
 </script>
 
 <style scoped>
